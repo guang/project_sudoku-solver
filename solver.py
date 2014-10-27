@@ -18,20 +18,11 @@ except:
 # 3)
 
 
-# initializations
-# var_len = side_len**3
-# M = 4*side_len**2
-# Aeq = np.zeros([M, N])
-# beq = np.ones([M, 1])
-# f = np.zeros(N)
-# ub = np.ones([side_len, side_len, side_len])
-
-
 # def get_constr_depth(side_len):
 # put rules into constraints (construct Aeq)
 # 1) only 1 number for each point on the grid
 #    for each (i,j), sum from 1 to side_len over k has to add up to one
-side_len = 2
+side_len = 9
 var_len = side_len**3
 constr_depth = np.empty([side_len**2, var_len])
 for i in range(side_len):
@@ -44,7 +35,7 @@ for i in range(side_len):
 # def get_constr_row(side_len):
 # 2) rows contain 1-side_len each exactly once
 #    for each (i,k), sum from 1 to side_len over j has to add up to one
-side_len = 2
+side_len = 9
 var_len = side_len**3
 constr_row = np.empty([side_len**2, var_len])
 for j in range(side_len):
@@ -57,7 +48,7 @@ for j in range(side_len):
 # def get_constr_col(side_len):
 # 3) columns contain 1-side_len each exactly once
 #    for each (j,k), sum from 1 to side_len over i has to add up to one
-side_len = 2
+side_len = 9
 var_len = side_len**3
 constr_col = np.empty([side_len**2, var_len])
 for i in range(side_len):
@@ -83,12 +74,24 @@ for u_count, u in enumerate([0, 3, 6]):
 
 
 # put clues into constraints (construct beq)
-lower_bound = np.zeros([side_len, side_len, side_len])
+lower_bound_raw = np.zeros([side_len, side_len, side_len])
 side_len = 9
 for i in range(side_len):
     for j in range(side_len):
         k = raw_csv[i, j]
         if k:
-            lower_bound[i, j, k-1] = 1
+            lower_bound_raw[i, j, k-1] = 1
+
+
+# initializations
+side_len = 9
+var_len = side_len**3
+constr_len = 4*side_len**2       # 4 sets of constraints
+Aeq = np.concatenate((constr_depth, constr_row, constr_col, constr_sqr))
+beq = np.ones([constr_len, 1])
+obj_coef = np.zeros(var_len)
+upper_bound = np.ones([side_len, side_len, side_len]).reshape(var_len)
+lower_bound = lower_bound_raw.reshape(var_len)
+
 
 # solve via python-zibopt OR MAN UP AND CODE BRANCH N BOUND omg
