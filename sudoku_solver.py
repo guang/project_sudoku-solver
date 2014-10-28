@@ -17,18 +17,45 @@ def read_sudoku(file_name):
         file_name (str):    name of the file to read data in
 
     Returns:
-        cell_
+        raw_content (list):    content of the file stored in a list
+
+    Exceptions:
+        if failed to read the file (file not found), return empty list
     """
-    with open(file_name, 'r') as f:
-        reader = csv.reader(f)
-        cell_val_all = []
-        for row in reader:
-            cell_val_all += row
-    return cell_val_all
+
+    try:
+        with open(file_name, 'r') as f:
+            reader = csv.reader(f)
+            raw_content = []
+            for row in reader:
+                raw_content += row
+        return raw_content
+    except:
+        print("Failed to read the file specified")
+        return []
 
 
-def check_sudoku(cell_val_all):
-    pass
+def check_sudoku(raw_content):
+    """ Check the content of the file for formatting errors or anomalies
+
+    1) length of the list is 81
+    2) contains only 0-9
+
+    Args:
+        raw_content (list):     content of the file, list of strings
+
+    Returns:
+        is_correct_format (bool):   True if format is correct, else False
+    """
+
+    if len(raw_content) is not 81:
+        return False
+
+    for i in raw_content:
+        if i not in '0123456789':
+            return False
+
+    return True
 
 
 def get_infeasible_set(cell_val_all, cell_ind):
@@ -67,6 +94,15 @@ def get_infeasible_set(cell_val_all, cell_ind):
 
 
 def solve_sudoku(cell_val_all):
+    """ recursively solve sudoku puzzle using backtracking
+
+    Args:
+        cell_val_all (list):        unsolved puzzle stored as list of strings
+
+    Returns:
+        solved_sudoku (list):       solved puzzle stored as list of strings
+    """
+
     try:
         cell_ind = cell_val_all.index('0')
     except ValueError:
@@ -84,6 +120,8 @@ def solve_sudoku(cell_val_all):
 
 
 def write_sudoku(cell_val_all, file_name):
+    """ writes the solved sudoku to specified file """
+
     with open(file_name, 'w') as f:
         writer = csv.writer(f, delimiter=',')
         for row in range(9):
@@ -91,6 +129,7 @@ def write_sudoku(cell_val_all, file_name):
 
 
 def print_sudoku(cell_val_all):
+    """ pretty print sudoku puzzle given its content stored as a list """
     print('-'*21)
     for i in range(9):
         for j in range(9):
@@ -103,6 +142,7 @@ def print_sudoku(cell_val_all):
 
 
 def save_sudoku(solved_sudoku, file_name):
+    """ asks user whether whether/how to save the solved sudoku """
     is_save = get_input("Would you like to save the results to a separate file "
                         "(y/n)? ")
     if is_save in ('y', 'yes', 'Y', 'Yes'):
@@ -121,7 +161,28 @@ def save_sudoku(solved_sudoku, file_name):
 
 
 def main(file_name):
-    cell_val_all = read_sudoku(file_name)
+    """ reads and checks user specified unsolved sudoku, prints and solves it,
+    finally saves it based on user instructions """
+
+    raw_content = read_sudoku(file_name)
+    is_correct_format = check_sudoku(raw_content)
+    if is_correct_format:
+        cell_val_all = raw_content
+    else:
+        print("Unable to properly parse given csv file, please check its "
+              "content to make sure it is in the correct format: a 9 by 9 "
+              "'matrix' with each element ranging from 0 to 9 (0 meaning "
+              "blank) separated by comma, like this:\n"
+              "0,0,1,0,0,0,8,0,0\n"
+              "0,5,0,0,1,0,0,4,0\n"
+              "0,0,0,2,0,0,0,0,7\n"
+              "0,0,7,0,0,5,0,8,0\n"
+              "4,0,0,0,6,0,0,0,9\n"
+              "0,2,0,4,0,0,5,0,0\n"
+              "3,0,0,0,0,7,0,0,0\n"
+              "0,7,0,0,2,0,0,9,0\n"
+              "0,0,4,0,0,0,1,0,0\n")
+        return
 
     print("Here's the unsolved sudoku puzzle you picked:")
     print_sudoku(cell_val_all)
