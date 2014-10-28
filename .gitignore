@@ -1,2 +1,2 @@
 *.DS_Store
-PY_CACHE
+__pycache__
