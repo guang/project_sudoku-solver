@@ -156,12 +156,13 @@ the codes more readable. Here's the pseudocode for this approach:
 
 
 ### Testing
-Minimal tests are written to test the logics and some benchmark cases. Using `py.test`, we
+Minimal tests are written to test the logics and some edge cases. They are stored in
+`test_sudoku_solver.py` using simple assert statements. Using [pytest](pytest.org/), we
 simply type
 ```
 py.test test_sudoku_solver.py
 ```
-in terminal to run the tests.
+in terminal and the tests will be automatically collected and ran.
 
 
 ### Existence and Uniqueness
@@ -188,6 +189,55 @@ following features to provide backward compatability for Python 2.7 in `sudoku_s
 
 
 ### Benchmarking
+A set of 46 benchmarking sudoku instances are derived from a
+[paper](lipas.uwasa.fi/~timan/sudoku) published in IEEE WCCI 2008 on *Solving and Analyzing
+Sudokus with Cultural Algorithms*.
+
+I run my algorithm on all 46 instances for 20 times each to get the average computation
+time. I then compared my results to the cultural algorithm described in the paper.
+**Important: Please keep in mind that I did not run the algorithm from the paper on my machine
+(which has better specs), so the purpose of this comparison is to show trends, not to show
+the absolute difference in speeds**
+Here are some examples:
+
+<table>
+  <tr>
+    <th>File Name</th>
+    <th>Puzzle Difficulty</th>
+    <th>Guang's Sudoku Solver run time</th>
+    <th>Cultural Algorithm run time</th>
+  </tr>
+  <tr>
+    <td>s10a.txt</td>
+    <td>Easy</td>
+    <td>0.01301</td>
+    <td>0.428</td>
+  </tr>
+  <tr>
+    <td>s11a.txt</td>
+    <td>Medium</td>
+    <td>0.27099</td>
+    <td>2.280</td>
+  </tr>
+  <tr>
+    <td>s11b.txt</td>
+    <td>Medium</td>
+    <td>0.18505</td>
+    <td>7.874</td>
+  </tr>
+  <tr>
+    <td>s12a.txt</td>
+    <td>Hard</td>
+    <td>0.01285</td>
+    <td>34.015</td>
+  </tr>
+  <tr>
+    <td>s12b.txt</td>
+    <td>Hard</td>
+    <td>0.03943</td>
+    <td>3.436</td>
+  </tr>
+</table>
 
 
 
