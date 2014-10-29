@@ -4,6 +4,32 @@ project_sudoku-solver
 submission for insight data engineering coding challenge (Jan 2015 session)
 
 #### Usage
+This program aimed to be flexible with different kinds of inputs, specifically:
+
+- No inputs, like
+
+  ```python
+  python sudoku_solver.py
+  ```
+
+  Here the user can type the name of their input csv file after the welcome prompt
+
+- 1 input, such as
+
+  ```python
+  python sudoku_solver.py example.csv
+  ```
+
+  Where `example.csv` is the unsolved sudoku puzzle in .csv format
+
+- 2 inputs, like
+
+  ```python
+  python sudoku_solver.py example.csv solved_example.csv
+  ```
+
+  Where `example.csv` is the unsolved sudoku puzzle in .csv format and `solved_example.csv`
+  is the name of the file to store the output from the algorithm.
 
 
 #### Dependencies
