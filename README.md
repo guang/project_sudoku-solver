@@ -10,6 +10,12 @@ submission for insight data engineering coding challenge (Jan 2015 session)
 - [Project Documentation](#project-documentation)
   - [Executive Summary](#executive-summary)
   - [Literature Review](#literature-review)
+  - [Algorithm Implementation](#algorithm-implementation)
+  - [Testing](#testing)
+  - [Existence and Uniqueness](#existence-and-uniqueness)
+  - [Python Version Compatibility](#python-version-compatibility)
+  - [Benchmarking](#benchmarking)
+- [References](#references)
 
 
 ## Quick Start
@@ -195,9 +201,11 @@ Sudokus with Cultural Algorithms*.
 
 I run my algorithm on all 46 instances for 20 times each to get the average computation
 time. I then compared my results to the cultural algorithm described in the paper.
+
 **Important: Please keep in mind that I did not run the algorithm from the paper on my machine
 (which has better specs), so the purpose of this comparison is to show trends, not to show
 the absolute difference in speeds**
+
 Here are some examples:
 
 <table>
