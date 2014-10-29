@@ -88,9 +88,9 @@ user experience*, a lot of effort is spent on
 2. making error messages informative and helpful
 3. creating useful intermediate reports (pretty-printing the sudoku and recording runtime).
 
-Lastly, to evaluate my solver against other approaches, I collected and tested 46 benchmark
-sudoku instances with varying levels of difficulty. [TEST OTHER ALGOS IF HAVE TIME, OTHERWISE
-REWORD THIS PARAGRAPH]
+Lastly, to evaluate my solver, I collected and tested 46 benchmark sudoku instances with
+varying levels of difficulty. The results show that this simple solver solves sudoku puzzles
+with competitive run time.
 
 ### Literature Review
 A quick search on the internet yields the following popular algorithms to solving the problem:
@@ -122,8 +122,8 @@ A quick search on the internet yields the following popular algorithms to solvin
   algorithm (which we would use to solve the IP) would reduce down to really just good ole
   backtracking. Furthermore, in terms of computations, we see that using brute force trying all
   possible combinations (which is not what we do, but nevertheless a proxy for actual complexity
-  ) we have 9\*\*81 for regular backtracking and 2\*\*729 for this IP formulation. since
-  2\*\*729 >> 9\*\*81, there is no obvious benefits to using branch and bound.
+  ) we have 9^81 for regular backtracking and 2^729 for this IP formulation. since
+  2^729 >> 9^81, there is no obvious benefits to using branch and bound.
 
 - **Exact Cover**
 
@@ -247,6 +247,7 @@ Here are some examples:
   </tr>
 </table>
 
+Albeit my solver is ran on a better machine, these results show that it solves the problems in very reasonable time.
 
 
 
