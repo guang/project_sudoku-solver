@@ -143,13 +143,15 @@ the codes more readable. Here's the pseudocode for this approach:
 
 ```python
   if 'already at a solution':
-    'return the value'
+    return 'the value'
   'pick an empty cell'
   for 'every feasible choice at this cell':
     'make the choice for the cell and take a step along the path'
     'invoke recursion to solve the problem from this point'
-    if 'recursive call succeeds, return solutions to the next higher level'
-  'otherwise backtrack to previous state'
+    if 'recursive call succeeds'
+      return 'solutions to the next higher level'
+  else:
+    'backtrack to previous state'
 ```
 
 
