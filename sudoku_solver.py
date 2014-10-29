@@ -144,46 +144,73 @@ def print_sudoku(cell_val_all):
 
 
 def save_sudoku(solved_sudoku, input_file_name):
-    """ asks user whether whether/how to save the solved sudoku """
+    """ Asks user whether/where to save the solved sudoku. If user chooses to
+    save the file with specified name, call write_sudoku(). If the file name
+    cannot be saved to, call write_sudoku() with a  default file name.
+
+    Args:
+        solved_sudoku (list):       content of the solved sudoku as a list
+        input_file_name (str):      file_name used to read the input file. this
+                                    is used to make the default output file_name
+    """
+
     is_save = get_input("Would you like to save the results to a separate file "
                         "(y/n)? ")
     if is_save in ('y', 'yes', 'Y', 'Yes'):
         user_file_name = get_input("Please name the file (e.g. my_sud.csv): ")
         try:
             write_sudoku(solved_sudoku, user_file_name)
-            print("File successfully saved.")
+            print("File successfully saved to."
+                  "{0}".format(user_file_name))
         except:
             default_file_name = "solved_{0}".format(input_file_name)
             print("Could not save to the specified file name, instead "
                   "it is saved to {0}".format(default_file_name))
             write_sudoku(solved_sudoku, default_file_name)
+    print_end_msg()
+
+
+def print_wrong_format():
+    """ prints error message when input format is wrong """
+    print("Unable to properly parse given csv file, please check its "
+          "content to make sure it is in the correct format: a 9 by 9 "
+          "'matrix' with each element ranging from 0 to 9 (0 meaning "
+          "blank) separated by comma, like this:\n"
+          "0,0,1,0,0,0,8,0,0\n"
+          "0,5,0,0,1,0,0,4,0\n"
+          "0,0,0,2,0,0,0,0,7\n"
+          "0,0,7,0,0,5,0,8,0\n"
+          "4,0,0,0,6,0,0,0,9\n"
+          "0,2,0,4,0,0,5,0,0\n"
+          "3,0,0,0,0,7,0,0,0\n"
+          "0,7,0,0,2,0,0,9,0\n"
+          "0,0,4,0,0,0,1,0,0\n")
+
+
+def print_end_msg():
     print("Thanks for using Guang's sudoku solver! Questions/comments"
-          "are welcome at gy8@berkeley.edu")
+          " are welcome at gy8@berkeley.edu")
 
 
 def main(file_name):
     """ reads and checks user specified unsolved sudoku, prints and solves it,
-    finally saves it based on user instructions """
+    finally saves it based on user instructions
+
+    Args:
+        file_name (str):            name of the file to read in and parse
+
+    Returns:
+        solved_sudoku (list):       content of the solved sudoku as a list,
+                                    empty if not solved
+    """
 
     raw_content = read_sudoku(file_name)
     is_correct_format = check_sudoku(raw_content)
     if is_correct_format:
         cell_val_all = raw_content
     else:
-        print("Unable to properly parse given csv file, please check its "
-              "content to make sure it is in the correct format: a 9 by 9 "
-              "'matrix' with each element ranging from 0 to 9 (0 meaning "
-              "blank) separated by comma, like this:\n"
-              "0,0,1,0,0,0,8,0,0\n"
-              "0,5,0,0,1,0,0,4,0\n"
-              "0,0,0,2,0,0,0,0,7\n"
-              "0,0,7,0,0,5,0,8,0\n"
-              "4,0,0,0,6,0,0,0,9\n"
-              "0,2,0,4,0,0,5,0,0\n"
-              "3,0,0,0,0,7,0,0,0\n"
-              "0,7,0,0,2,0,0,9,0\n"
-              "0,0,4,0,0,0,1,0,0\n")
-        return
+        print_wrong_format()
+        return []
 
     print("Here's the unsolved sudoku puzzle you picked:")
     print_sudoku(cell_val_all)
@@ -195,27 +222,44 @@ def main(file_name):
     print("Successfully solved in {:.3f} seconds\n"
           "Here's the solved puzzle".format(time.clock()-t0))
     print_sudoku(solved_sudoku)
-
-    save_sudoku(solved_sudoku, file_name)
+    return solved_sudoku
 
 
 if __name__ == "__main__":
     # Supports Python 2 and 3 input
     # Defaults to Python 3 input()
     get_input = input
-
     # If Python 2 detected, use raw_input()
     if sys.version_info[:2] <= (2, 7):
         get_input = raw_input
 
-    if len(sys.argv) == 2:
-        main(sys.argv[1])
-    elif len(sys.argv) == 1:
+    # Check for number of inputs
+    # case1: no arguments -> ask for input_file_name
+    if len(sys.argv) == 1:
         raw_file_name = get_input("Welcome to Guang's sudoku solver! What's "
                                   "the name of the unsolved sudoku csv file? "
                                   "(if you don't have one, try typing "
                                   "example.csv)\n")
-        main(raw_file_name)
+        solved_sudoku = main(raw_file_name)
+        if len(solved_sudoku) == 81:
+            save_sudoku(solved_sudoku, raw_file_name)
+
+    # case2: 1 argument -> run main
+    elif len(sys.argv) == 2:
+        solved_sudoku = main(sys.argv[1])
+        if len(solved_sudoku) == 81:
+            save_sudoku(solved_sudoku, sys.argv[1])
+
+    # case3: 2 arguments -> treat input 1 as input_file_name and input 2
+    #                       as output_file_name
+    elif len(sys.argv) == 3:
+        solved_sudoku = main(sys.argv[1])
+        try:
+            write_sudoku(sys.argv[2])
+            print_end_msg()
+        except:
+            print("Unable to write file to {0}".format(sys.argv[2]))
+
     else:
         print("Too many input arguments: Try running 'python sudoku_solver.py "
               "example.csv'")
