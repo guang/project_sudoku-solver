@@ -14,7 +14,7 @@ def read_sudoku(file_name):
     """ Read the given file line by line, storing values in a list.
 
     Args:
-        file_name (str):    name of the file to read data in
+        file_name (str):    name of the csv file to read data in
 
     Returns:
         raw_content (list):    content of the file stored in a list
@@ -31,7 +31,7 @@ def read_sudoku(file_name):
                 raw_content += row
         return raw_content
     except:
-        print("Failed to read the file specified")
+        print("Failed to read the file specified: {0}".format(file_name))
         return []
 
 
@@ -48,7 +48,7 @@ def check_sudoku(raw_content):
         is_correct_format (bool):   True if format is correct, else False
     """
 
-    if len(raw_content) is not 81:
+    if len(raw_content) != 81:
         return False
 
     for i in raw_content:
@@ -67,7 +67,7 @@ def get_infeasible_set(cell_val_all, cell_ind):
         cell_val_all (list):    Current value of each cell (0 is blank) stored
                                 in a 81 items long list.
         cell_ind (int):         Index of the current blank cell that we are
-                                trying to a value in. (0 to 8)
+                                trying to put a value in. (0 to 8)
 
     Returns:
         infeasible_set (set):   the set of infeasible values.
@@ -133,6 +133,8 @@ def print_sudoku(cell_val_all):
     print('-'*21)
     for i in range(9):
         for j in range(9):
+            # The 'end' argument in print() is a known bug in pyflakes
+            # use NOQA to suppress warning from pyflakes
             print(cell_val_all[9 * i + j] + ' ', end='')    # NOQA
             if (j+4) % 9 == 0 or (j+7) % 9 == 0:
                 print('| ', end='')     # NOQA
@@ -141,18 +143,17 @@ def print_sudoku(cell_val_all):
             print('-'*21)
 
 
-def save_sudoku(solved_sudoku, file_name):
+def save_sudoku(solved_sudoku, input_file_name):
     """ asks user whether whether/how to save the solved sudoku """
     is_save = get_input("Would you like to save the results to a separate file "
                         "(y/n)? ")
     if is_save in ('y', 'yes', 'Y', 'Yes'):
-        print("")
         user_file_name = get_input("Please name the file (e.g. my_sud.csv): ")
         try:
             write_sudoku(solved_sudoku, user_file_name)
             print("File successfully saved.")
         except:
-            default_file_name = "solved_{0}".format(file_name)
+            default_file_name = "solved_{0}".format(input_file_name)
             print("Could not save to the specified file name, instead "
                   "it is saved to {0}".format(default_file_name))
             write_sudoku(solved_sudoku, default_file_name)
@@ -209,9 +210,12 @@ if __name__ == "__main__":
 
     if len(sys.argv) == 2:
         main(sys.argv[1])
-    else:
+    elif len(sys.argv) == 1:
         raw_file_name = get_input("Welcome to Guang's sudoku solver! What's "
                                   "the name of the unsolved sudoku csv file? "
                                   "(if you don't have one, try typing "
                                   "example.csv)\n")
         main(raw_file_name)
+    else:
+        print("Too many input arguments: Try running 'python sudoku_solver.py "
+              "example.csv'")
