@@ -49,6 +49,6 @@ if __name__ == '__main__':
         long_file_name = "{0}/{1}".format(path_name, file_name)
         content = read_space_sep_sudoku(long_file_name)
 
-        avg_run_time = average_run_time(content, 5)
+        avg_run_time = average_run_time(content, 20)
         with open('benchmarking_results.txt', 'a') as resultz:
             resultz.write("{}, {:.5f}\n".format(file_name, avg_run_time))
