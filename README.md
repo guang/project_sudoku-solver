@@ -90,21 +90,20 @@ REWORD THIS PARAGRAPH]
 A quick search on the internet yields the following popular algorithms to solving the problem:
 
 
-- Backtracking
-An iterative approach that tries 
+- **Backtracking**
 
-- Brute-force
-Here we try all possible 
+  By iterating over all possible solutions, the algorithm rolls back to a preview solution
+  when the current solution leads to a dead end.
 
-- Exact-cover
-
-- Stochastic search
-
-- Constraint programming
+  Due to the brute force nature of the algorithm, it can be slower comparing to other
+  algorithms, however, it is clearly the **best approach for this project**, where
+  simplicity and conciseness
+  in implementation details is valued over computation time.
 
 - **Integer Programming**
 
-  Lastly, we can also pose the problem as a binary integer program. In order to use constraints
+  Having studied applied mathematics, the most obvious method was to pose the problem as a 
+  binary integer program. In order to use constraints
   to describe rules like "each row must contain numbers 1 to 9 exactly once", we have to add a
   third dimension (that uses position in the vector and a binary switch to indicate the number
   on the grid).
@@ -120,27 +119,38 @@ Here we try all possible
   ) we have 9\*\*81 for regular backtracking and 2\*\*729 for this IP formulation. since
   2\*\*729 >> 9\*\*81, there is no obvious benefits to using branch and bound.
 
+- **Exact Cover**
 
-### Model Approach
-After considering the pro/con of each algorithm and my own background, I decided to use the
-integer programming approach due to
-- ability to exploit existing (IP) solvers
-- elegant formulation using linear algebra
-- performance gaurantees as an integer program
+  This can be done using constraints, very much similar to the integer programming approach.
+  Like integer programming, this would involve using libraries that can work well with
+  large (sparse) matrices, namely Numpy, and a industrial-strength solver (sampling space is
+  a lot larger so it makes no sense to use brute-force)
+
+- **Stochastic search**
+
+  This method works by randomly assigning numbers to blank cells and calculate the number
+  of errors to figure out a direction to move to reduce the errors down to zero.
+
+  This sounds like a really interesting idea and it could outperform the other algorithms
+  for edge or really hard cases due to its stochastic nature. However, due to the lack
+  of experience with stochastic search, I decided not to go with this method.
 
 
 
-### Formulation
-In order to set up the binary integer program, we need to construct its components one by one:
+### Algorithm Implementation
+Having decided backtracking is the best way to go, I further used recursion to make
+the codes more readable. Here's the pseudocode for this approach:
 
-- Variable (x)
-
-  Here we have a vector of 9\*9\*9=729 components that represent a 9 by 9 by 9 tensor (3
-  dimensional matrix). For this tensor, the 2D matrix formed by *i* and *j* components
-  is the sudoko grid while the 3rd dimension represents numeric val
-
-- Objective function (f)
-This 
+```python
+  if 'already at a solution':
+    'return the value'
+  'pick an empty cell'
+  for 'every feasible choice at this cell':
+    'make the choice for the cell and take a step along the path'
+    'invoke recursion to solve the problem from this point'
+    if 'recursive call succeeds, return solutions to the next higher level'
+  'otherwise backtrack to previous state'
+```
 
 
 ### Testing
@@ -161,7 +171,7 @@ to 9), and
 
 
 
-### Python 2/3 Compatibility
+### Python Version Compatibility
 The codes are developed in Python 3.4. To ensure a smooth user experience, I added the
 following features to provide backward compatability for Python 2.7 in `sudoku_solver.py`:
 
