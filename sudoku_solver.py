@@ -36,7 +36,7 @@ def read_sudoku(file_name):
 
 
 def check_sudoku(raw_content):
-    """ Check the content of the file for formatting errors or anomalies
+    """ Check the content of the file for errors or anomalies
 
     1) length of the list is 81
     2) contains only 0-9
@@ -160,8 +160,7 @@ def save_sudoku(solved_sudoku, input_file_name):
         user_file_name = get_input("Please name the file (e.g. my_sud.csv): ")
         try:
             write_sudoku(solved_sudoku, user_file_name)
-            print("File successfully saved to."
-                  "{0}".format(user_file_name))
+            print_success_save(user_file_name)
         except:
             default_file_name = "solved_{0}".format(input_file_name)
             print("Could not save to the specified file name, instead "
@@ -192,6 +191,10 @@ def print_end_msg():
           " are welcome at gy8@berkeley.edu")
 
 
+def print_success_save(file_name):
+    print("File successfully saved to {0}".format(file_name))
+
+
 def main(file_name):
     """ reads and checks user specified unsolved sudoku, prints and solves it,
     finally saves it based on user instructions
@@ -219,10 +222,15 @@ def main(file_name):
 
     t0 = time.clock()
     solved_sudoku = solve_sudoku(cell_val_all)
-    print("Successfully solved in {:.3f} seconds\n"
-          "Here's the solved puzzle".format(time.clock()-t0))
-    print_sudoku(solved_sudoku)
-    return solved_sudoku
+    if solved_sudoku:
+        print("Successfully solved in {:.3f} seconds\n"
+              "Here's the solved puzzle".format(time.clock()-t0))
+        print_sudoku(solved_sudoku)
+        return solved_sudoku
+    else:
+        print("Algorithm failed to a find feasible solution. Please double "
+              "check for errors in your input csv file")
+        return []
 
 
 if __name__ == "__main__":
@@ -255,7 +263,8 @@ if __name__ == "__main__":
     elif len(sys.argv) == 3:
         solved_sudoku = main(sys.argv[1])
         try:
-            write_sudoku(sys.argv[2])
+            write_sudoku(solved_sudoku, sys.argv[2])
+            print_success_save(sys.argv[2])
             print_end_msg()
         except:
             print("Unable to write file to {0}".format(sys.argv[2]))
