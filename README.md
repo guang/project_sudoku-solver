@@ -3,7 +3,7 @@ Guang's Sudoku Solver
 
 submission for insight data engineering coding challenge (Jan 2015 session)
 
-## Table of Cntents
+## Table of Contents
 - [Quick Start](#quick-start)
   - [Usage](#usage)
   - [Dependencies](#dependencies)
@@ -108,8 +108,8 @@ A quick search on the internet yields the following popular algorithms to solvin
 
 - **Integer Programming**
 
-  Having studied applied mathematics, the most obvious method was to pose the problem as a 
-  binary integer program. In order to use constraints
+  Having studied applied mathematics in undergraduate, the most obvious method was to pose
+  the problem as a binary integer program. In order to use constraints
   to describe rules like "each row must contain numbers 1 to 9 exactly once", we have to add a
   third dimension (that uses position in the vector and a binary switch to indicate the number
   on the grid).
