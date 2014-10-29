@@ -212,8 +212,8 @@ Here are some examples:
   <tr>
     <th>File Name</th>
     <th>Puzzle Difficulty</th>
-    <th>Guang's Sudoku Solver run time</th>
-    <th>Cultural Algorithm run time</th>
+    <th>Guang's Sudoku Solver run time (in seconds)</th>
+    <th>Cultural Algorithm run time (in seconds)</th>
   </tr>
   <tr>
     <td>s10a.txt</td>
