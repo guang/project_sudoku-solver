@@ -164,13 +164,16 @@ py.test test_sudoku_solver.py
 in terminal to run the tests.
 
 
-### Error Handling
-- In addition to checking the size (it must be a 9 by 9 grid), value (must be integers from 1
-to 9), and
-
-
 ### Existence and Uniqueness
+From [literature](http://mathworld.wolfram.com/Sudoku.html), we know that there is no
+uniqueness guarantees unless we exhaustively explore all possibilities for sudoku puzzles
+less than 17 clues.
 
+As such, an algorithm that uses backtracking, like mine, cannot guarantee uniqueness of
+solution - instead it returns an element from the set of feasible solutions.
+
+Because of the exhaustive nature of this algorithm, it will find a solution if there is
+at least one solution to the given puzzle.
 
 
 ### Python Version Compatibility
@@ -191,6 +194,7 @@ following features to provide backward compatability for Python 2.7 in `sudoku_s
 
 ### References
 
+- http://mathworld.wolfram.com/Sudoku.html
 - http://lipas.uwasa.fi/~timan/sudoku/
 - http://en.wikipedia.org/wiki/Sudoku_solving_algorithms
 - http://norvig.com/sudoku.html
