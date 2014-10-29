@@ -3,8 +3,15 @@ project_sudoku-solver
 
 submission for insight data engineering coding challenge (Jan 2015 session)
 
+#### Usage
 
-### Sudoku Solver Documentation
+
+#### Dependencies
+- [Python](https://www.python.org): 2.7 or 3.4
+
+
+
+### Sudoku Solver Code Challenge Documentation
 This page details my approach to solving the problem
 
 
@@ -70,9 +77,6 @@ integer programming approach due to
 - performance gaurantees as an integer program
 
 
-#### Assumptions
-- input puzzle must have at least 17 entries (
-
 
 #### Formulation
 In order to set up the binary integer program, we need to construct its components one by one:
@@ -97,20 +101,27 @@ in terminal to run the tests.
 
 
 #### Error Handling
-
 - In addition to checking the size (it must be a 9 by 9 grid), value (must be integers from 1
-to 9), and 
+to 9), and
+
+
+#### Existence and Uniqueness
 
 
 
+#### Python 2/3 Compatibility
+The codes are developed in Python 3.4. To ensure a smooth user experience, I added the
+following features to provide backward compatability for Python 2.7 in `sudoku_solver.py`:
 
-#### Usage
+- using `__future__` package, I make sure 2.7 users are using the python 3 print() function.
 
-
+- when the module is ran directly, I check for the python version and use `input` or
+  `raw_input` accordingly.
 
 
 
 #### Benchmarking
+
 
 
 
